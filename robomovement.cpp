@@ -14,7 +14,7 @@
 #include <time.h> 
 
 
-void moveDistance(int motorPower, bool direction, int distance) {
+void moveDistance(int motorPower, bool direction, float distance) {
     //Reset encoder counts
     rightEncoder.ResetCounts();
     leftEncoder.ResetCounts();
@@ -153,8 +153,38 @@ void driveUntilWall(int motorPower, bool direction) {
     leftMotor.Stop();
 }
 
+void driveUntilLine(int motorPower, bool direction) {
+    if (direction == FORWARD) {
+        //Set both motors to desired percent. multiplied by -1 because motors backwards
+        rightMotor.SetPercent(-1 * motorPower);
+        leftMotor.SetPercent(-1 * motorPower);
+    }
+    else {
+        rightMotor.SetPercent(motorPower);
+        leftMotor.SetPercent(motorPower);
+    }
 
-void followLineForDistance(int distance) {
+    //Drive until reach black line
+    while (left_opt.Value() <= LEFT_OPT_THRESHOLD && right_opt.Value() <= RIGHT_OPT_THRESHOLD && middle_opt.Value() <= MIDDLE_OPT_THRESHOLD) {
+        //if right is on black line, turn off right motor
+        if (right_opt.Value() > RIGHT_OPT_THRESHOLD) {
+            rightMotor.Stop();
+        }
+        //if left is on black line, turn off left motor
+        else if (left_opt.Value() > LEFT_OPT_THRESHOLD) {
+            leftMotor.Stop();
+        }
+        //if both stopped exit loop
+        else if (right_opt.Value() > RIGHT_OPT_THRESHOLD && left_opt.Value() > LEFT_OPT_THRESHOLD) {
+            break;
+        }
+    }
+    rightMotor.Stop();
+    leftMotor.Stop();
+}
+
+
+void followLineForDistance(float distance) {
     int state = MIDDLE; // Set the initial state
 
     //Reset encoder counts
@@ -364,4 +394,26 @@ void followLineUntilWall() {
 
     //Call driveUntilWall to line up with wall
     driveUntilWall(25, FORWARD);
+}
+
+
+void setArmStart() {
+    topServo.SetDegree(180);
+    Sleep(0.5);
+    middleServo.SetDegree(30);
+    Sleep(0.5);
+    bottomServo.SetDegree(150);
+    Sleep(0.5);
+}
+
+void dropTray() {
+
+}
+
+void setArmPositionTicketSlide() {
+
+}
+
+void slideTicket() {
+
 }

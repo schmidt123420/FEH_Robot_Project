@@ -25,9 +25,9 @@ FEHServo topServo(FEHServo::Servo7);
 AnalogInputPin cdsCell(FEHIO::P0_0);
 
 //Optosensor definitions
-AnalogInputPin rightOpt(FEHIO::P1_0);
+AnalogInputPin rightOpt(FEHIO::P1_2);
 AnalogInputPin middleOpt(FEHIO::P1_1);
-AnalogInputPin leftOpt(FEHIO::P1_2);
+AnalogInputPin leftOpt(FEHIO::P1_0);
 
 //Bump switch definitions
 DigitalInputPin microSwitchFrontRight(FEHIO::P2_0);

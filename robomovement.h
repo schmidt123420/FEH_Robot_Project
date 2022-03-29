@@ -11,8 +11,9 @@
 *
 * @param motorPower = motor power percent
 * @param direction = direction to travel in
+* @param distance = distance to travel in inches
 */
-void moveDistance(int motorPower, bool direction);
+void moveDistance(int motorPower, bool direction, float distance);
 
 
 /*! Turn to the right given angle using encoders.
@@ -56,9 +57,22 @@ int waitUntilLight();
 */
 void driveUntilWall(int motorPower, bool direction);
 
-/*! Follow line on the course (either straight or curved)
+/*! 
+*  Drives until robot is above a black line
 */
-void followLine();
+void driveUntilLine(int motorPower, bool direction);
+
+/*! Follow line on the course (either straight or curved)
+*   for given distance
+*
+*   @param distance = distance to travel
+*/
+void followLineForDistance(float distance);
+
+/*! Follow line on the course (either straight or curved)
+*   until robot meets a wall and line up with the wall
+*/
+void followLineUntilWall();
 
 /*! Set arm in starting position to drop tray
 */
