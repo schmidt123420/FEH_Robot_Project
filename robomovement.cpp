@@ -398,6 +398,13 @@ void followLineUntilWall() {
 
 
 void setArmStart() {
+    bottomServo.SetMin(BOTTOM_SERVO_MIN);
+    bottomServo.SetMax(BOTTOM_SERVO_MAX);
+    middleServo.SetMin(MIDDLE_SERVO_MIN);
+    middleServo.SetMax(MIDDLE_SERVO_MAX);
+    topServo.SetMin(TOP_SERVO_MIN);
+    topServo.SetMax(TOP_SERVO_MAX);
+
     topServo.SetDegree(180);
     Sleep(0.5);
     middleServo.SetDegree(30);
