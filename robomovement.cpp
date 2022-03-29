@@ -1,8 +1,6 @@
 /**
     Implementations for all functions that control the robot
 **/
-#include "robomovement.h"
-#include "roboconstants.h"
 
 #include <FEHLCD.h>
 #include <FEHIO.h>
@@ -12,6 +10,10 @@
 #include <FEHRPS.h>
 #include <FEHServo.h>
 #include <time.h> 
+
+#include "robomovement.h"
+#include "roboconstants.h"
+#include "roboports.h"
 
 
 void moveDistance(int motorPower, bool direction, float distance) {
@@ -25,12 +27,12 @@ void moveDistance(int motorPower, bool direction, float distance) {
     //Set both motors to desired percent
     //multiply by -1 because set up motors backwards
     if (direction == FORWARD) {
-        rightMotor.SetPercent(-1 * percent);
-        leftMotor.SetPercent(-1 * percent);
+        rightMotor.SetPercent(-1 * motorPower);
+        leftMotor.SetPercent(-1 * motorPower);
     }
     else {
-        rightMotor.SetPercent(percent);
-        leftMotor.SetPercent(percent);
+        rightMotor.SetPercent(motorPower);
+        leftMotor.SetPercent(motorPower);
     }
 
     //While the average of the left and right encoder is less than distance,
@@ -39,7 +41,7 @@ void moveDistance(int motorPower, bool direction, float distance) {
 
     //Turn off motors
     rightMotor.Stop();
-    leftMotor.Stop()
+    leftMotor.Stop();
 }
 
 void turnRight(int motorPower, int angle) {
@@ -165,17 +167,17 @@ void driveUntilLine(int motorPower, bool direction) {
     }
 
     //Drive until reach black line
-    while (left_opt.Value() <= LEFT_OPT_THRESHOLD && right_opt.Value() <= RIGHT_OPT_THRESHOLD && middle_opt.Value() <= MIDDLE_OPT_THRESHOLD) {
+    while (leftOpt.Value() <= LEFT_OPT_THRESHOLD && rightOpt.Value() <= RIGHT_OPT_THRESHOLD && middleOpt.Value() <= MIDDLE_OPT_THRESHOLD) {
         //if right is on black line, turn off right motor
-        if (right_opt.Value() > RIGHT_OPT_THRESHOLD) {
+        if (rightOpt.Value() > RIGHT_OPT_THRESHOLD) {
             rightMotor.Stop();
         }
         //if left is on black line, turn off left motor
-        else if (left_opt.Value() > LEFT_OPT_THRESHOLD) {
+        else if (leftOpt.Value() > LEFT_OPT_THRESHOLD) {
             leftMotor.Stop();
         }
         //if both stopped exit loop
-        else if (right_opt.Value() > RIGHT_OPT_THRESHOLD && left_opt.Value() > LEFT_OPT_THRESHOLD) {
+        else if (rightOpt.Value() > RIGHT_OPT_THRESHOLD && leftOpt.Value() > LEFT_OPT_THRESHOLD) {
             break;
         }
     }
@@ -209,22 +211,22 @@ void followLineForDistance(float distance) {
                 /* Drive */
 
                 //if loes contact with left and middle, turn right 
-                if (left_opt.Value() <= LEFT_OPT_THRESHOLD && middle_opt.Value() <= MIDDLE_OPT_THRESHOLD) {
+                if (leftOpt.Value() <= LEFT_OPT_THRESHOLD && middleOpt.Value() <= MIDDLE_OPT_THRESHOLD) {
                     state = RIGHT;
                 }
                 
                 //if lose contact with right and middle, turn left
-                else if (right_opt.Value() <= RIGHT_OPT_THRESHOLD && middle_opt.Value() <= MIDDLE_OPT_THRESHOLD) {
+                else if (rightOpt.Value() <= RIGHT_OPT_THRESHOLD && middleOpt.Value() <= MIDDLE_OPT_THRESHOLD) {
                     state = LEFT;
                 }
                  
                  /* If Right sensor is on line */ 
-                else if (right_opt.Value() > RIGHT_OPT_THRESHOLD) {
+                else if (rightOpt.Value() > RIGHT_OPT_THRESHOLD) {
                     state = RIGHT; // update a new state
                 }
 
                 /* Code for if left sensor is on the line */
-                else if (left_opt.Value() > LEFT_OPT_THRESHOLD) {
+                else if (leftOpt.Value() > LEFT_OPT_THRESHOLD) {
                     state = LEFT;
                 }
 
@@ -238,18 +240,18 @@ void followLineForDistance(float distance) {
                 /* Drive */
                 
                 /*IF I no longer need to turn right... */
-                if(middle_opt.Value() > MIDDLE_OPT_THRESHOLD) {
+                if(middleOpt.Value() > MIDDLE_OPT_THRESHOLD) {
                     /* update a new state */
                     state = MIDDLE;
                 }
 
                 //if left and not right, turn left
-                else if (left_opt.Value() > LEFT_OPT_THRESHOLD && right_opt.Value() <= RIGHT_OPT_THRESHOLD) {
+                else if (leftOpt.Value() > LEFT_OPT_THRESHOLD && rightOpt.Value() <= RIGHT_OPT_THRESHOLD) {
                     state = LEFT;
                 }
 
                 //Code for if no optosensor sees the line
-                else if (right_opt.Value() <= RIGHT_OPT_THRESHOLD && left_opt.Value() <= LEFT_OPT_THRESHOLD && middle_opt.Value() <= MIDDLE_OPT_THRESHOLD) {
+                else if (rightOpt.Value() <= RIGHT_OPT_THRESHOLD && leftOpt.Value() <= LEFT_OPT_THRESHOLD && middleOpt.Value() <= MIDDLE_OPT_THRESHOLD) {
                     state = LEFT;
                 }
 
@@ -264,18 +266,18 @@ void followLineForDistance(float distance) {
                 /* Drive */
                 
                 /*IF I no longer need to turn left... */
-                if(middle_opt.Value() > MIDDLE_OPT_THRESHOLD) {
+                if(middleOpt.Value() > MIDDLE_OPT_THRESHOLD) {
                     /* update a new state */
                     state = MIDDLE;
                 }
 
                 //if right and not left, turn right
-                else if (right_opt.Value() > RIGHT_OPT_THRESHOLD && left_opt.Value() <= LEFT_OPT_THRESHOLD) {
+                else if (rightOpt.Value() > RIGHT_OPT_THRESHOLD && leftOpt.Value() <= LEFT_OPT_THRESHOLD) {
                     state = RIGHT;
                 }
 
                 //Code for if no optosensor sees the line
-                else if (right_opt.Value() <= RIGHT_OPT_THRESHOLD && left_opt.Value() <= LEFT_OPT_THRESHOLD && middle_opt.Value() <= MIDDLE_OPT_THRESHOLD) {
+                else if (rightOpt.Value() <= RIGHT_OPT_THRESHOLD && leftOpt.Value() <= LEFT_OPT_THRESHOLD && middleOpt.Value() <= MIDDLE_OPT_THRESHOLD) {
                     state = RIGHT;
                 }
 
@@ -298,9 +300,6 @@ void followLineUntilWall() {
     rightEncoder.ResetCounts();
     leftEncoder.ResetCounts();
 
-    //Set distance as inches to drive * EXPECTED_COUNTS_PER_INCH
-    distance = distance * EXPECTED_COUNTS_PER_INCH;
-
     /*
         Keep following the line until a switch has been pressed
     */
@@ -315,22 +314,22 @@ void followLineUntilWall() {
                 /* Drive */
 
                 //if loes contact with left and middle, turn right 
-                if (left_opt.Value() <= LEFT_OPT_THRESHOLD && middle_opt.Value() <= MIDDLE_OPT_THRESHOLD) {
+                if (leftOpt.Value() <= LEFT_OPT_THRESHOLD && middleOpt.Value() <= MIDDLE_OPT_THRESHOLD) {
                     state = RIGHT;
                 }
                 
                 //if lose contact with right and middle, turn left
-                else if (right_opt.Value() <= RIGHT_OPT_THRESHOLD && middle_opt.Value() <= MIDDLE_OPT_THRESHOLD) {
+                else if (rightOpt.Value() <= RIGHT_OPT_THRESHOLD && middleOpt.Value() <= MIDDLE_OPT_THRESHOLD) {
                     state = LEFT;
                 }
                  
                  /* If Right sensor is on line */ 
-                else if (right_opt.Value() > RIGHT_OPT_THRESHOLD) {
+                else if (rightOpt.Value() > RIGHT_OPT_THRESHOLD) {
                     state = RIGHT; // update a new state
                 }
 
                 /* Code for if left sensor is on the line */
-                else if (left_opt.Value() > LEFT_OPT_THRESHOLD) {
+                else if (leftOpt.Value() > LEFT_OPT_THRESHOLD) {
                     state = LEFT;
                 }
 
@@ -344,18 +343,18 @@ void followLineUntilWall() {
                 /* Drive */
                 
                 /*IF I no longer need to turn right... */
-                if(middle_opt.Value() > MIDDLE_OPT_THRESHOLD) {
+                if(middleOpt.Value() > MIDDLE_OPT_THRESHOLD) {
                     /* update a new state */
                     state = MIDDLE;
                 }
 
                 //if left and not right, turn left
-                else if (left_opt.Value() > LEFT_OPT_THRESHOLD && right_opt.Value() <= RIGHT_OPT_THRESHOLD) {
+                else if (leftOpt.Value() > LEFT_OPT_THRESHOLD && rightOpt.Value() <= RIGHT_OPT_THRESHOLD) {
                     state = LEFT;
                 }
 
                 //Code for if no optosensor sees the line
-                else if (right_opt.Value() <= RIGHT_OPT_THRESHOLD && left_opt.Value() <= LEFT_OPT_THRESHOLD && middle_opt.Value() <= MIDDLE_OPT_THRESHOLD) {
+                else if (rightOpt.Value() <= RIGHT_OPT_THRESHOLD && leftOpt.Value() <= LEFT_OPT_THRESHOLD && middleOpt.Value() <= MIDDLE_OPT_THRESHOLD) {
                     state = LEFT;
                 }
 
@@ -370,18 +369,18 @@ void followLineUntilWall() {
                 /* Drive */
                 
                 /*IF I no longer need to turn left... */
-                if(middle_opt.Value() > MIDDLE_OPT_THRESHOLD) {
+                if(middleOpt.Value() > MIDDLE_OPT_THRESHOLD) {
                     /* update a new state */
                     state = MIDDLE;
                 }
 
                 //if right and not left, turn right
-                else if (right_opt.Value() > RIGHT_OPT_THRESHOLD && left_opt.Value() <= LEFT_OPT_THRESHOLD) {
+                else if (rightOpt.Value() > RIGHT_OPT_THRESHOLD && leftOpt.Value() <= LEFT_OPT_THRESHOLD) {
                     state = RIGHT;
                 }
 
                 //Code for if no optosensor sees the line
-                else if (right_opt.Value() <= RIGHT_OPT_THRESHOLD && left_opt.Value() <= LEFT_OPT_THRESHOLD && middle_opt.Value() <= MIDDLE_OPT_THRESHOLD) {
+                else if (rightOpt.Value() <= RIGHT_OPT_THRESHOLD && leftOpt.Value() <= LEFT_OPT_THRESHOLD && middleOpt.Value() <= MIDDLE_OPT_THRESHOLD) {
                     state = RIGHT;
                 }
 

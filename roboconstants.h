@@ -33,4 +33,6 @@ enum LineStates {
     MIDDLE,
     RIGHT,
     LEFT
-}
+};
+
+#endif

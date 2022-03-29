@@ -2,8 +2,15 @@
     Header file for all ports on the robot used
 **/
 
+
+#include <FEHIO.h>
+#include <FEHServo.h>
+#include <FEHMotor.h>
+
 #ifndef ROBOPORTS_H
 #define ROBOPORTS_H
+
+
 
 //Igwan motor declarations
 extern FEHMotor leftMotor;
