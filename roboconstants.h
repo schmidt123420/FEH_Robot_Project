@@ -10,7 +10,7 @@
 */
 #define PI 3.141592653589793
 #define BOT_WIDTH 9 //width of crayola bot
-#define WHEEL_DIAMETER 3 //diameter of robot wheel
+#define WHEEL_DIAMETER 3.0 //diameter of robot wheel
 #define BLUE_COLOR 0
 #define RED_COLOR 1
 #define FORWARD true
@@ -26,7 +26,7 @@
 #define RIGHT_OPT_THRESHOLD 2.3
 #define MIDDLE_OPT_THRESHOLD 2.3
 #define LEFT_OPT_THRESHOLD 2.4
-#define EXPECTED_COUNTS_PER_INCH 318.0/(WHEEL_DIAMETER * PI)
+#define EXPECTED_COUNTS_PER_INCH (318.0/(WHEEL_DIAMETER * PI))
 
 //Line states for line following algorithim
 enum LineStates {

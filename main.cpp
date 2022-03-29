@@ -15,7 +15,6 @@
 int main(void) {
 //bottomServo.TouchCalibrate();
 
-    int motorPercent = 40;
     int expectedCountsPerInch = 318/(WHEEL_DIAMETER * PI); //Input theoretical counts
 
     bottomServo.SetMin(BOTTOM_SERVO_MIN);
@@ -39,21 +38,20 @@ int main(void) {
     }
 
     // Move forward 13.5 inches
-    moveDistance(35,1,13.5*EXPECTED_COUNTS_PER_INCH);
+    moveDistance(35,FORWARD,13.5);
     // Turn 45 right
     Sleep(.5);
     turnRight(25,45);
-    // Move forward 35 inches (up the ramp)
-    moveDistance(45,1, 35*EXPECTED_COUNTS_PER_INCH);
+    // Move forward 40 inches (up the ramp)
+    moveDistance(40,FORWARD, 35);
     turnLeft(25,90);
-    moveDistance(25,1,2*EXPECTED_COUNTS_PER_INCH);
+    moveDistance(25,FORWARD,5);
     Sleep(.5);
-    turnLeft(25,10);
-    Sleep(.5);
-    // int t = TimeNow();
-    // while(t<TimeNow()+2.0){
-    //      driveUntilLine();
-    //  }
-    followLineForDistance(2);
-    dropTray();
+    turnLeft(25,90);
+    driveUntilWall(20,FORWARD);
+    // moveDistance(35,BACKWARD,4);
+    // turnRight(25,180);
+    // moveDistance(35,FORWARD,18);
+    // turnLeft(25,90)
+    // dropTray();
 }
