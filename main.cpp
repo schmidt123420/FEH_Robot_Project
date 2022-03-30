@@ -13,6 +13,6 @@
 
 
 int main(void) {
-
+    followLineUntilWall();
     return 0;
 }
