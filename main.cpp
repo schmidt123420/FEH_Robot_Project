@@ -13,11 +13,6 @@
 
 
 int main(void) {
-<<<<<<< HEAD
-    followLineUntilWall();
-    return 0;
-}
-=======
 //bottomServo.TouchCalibrate();
 
     int expectedCountsPerInch = 318/(WHEEL_DIAMETER * PI); //Input theoretical counts
@@ -52,4 +47,3 @@ int main(void) {
     // turn left to bump into wall
     
 }
->>>>>>> 41f53b10f7a6389138bdbee4b805720b8b62fd99
