@@ -30,7 +30,11 @@ void moveDistance(int motorPower, bool direction, float distance) {
         rightMotor.SetPercent(-1 * motorPower);
         leftMotor.SetPercent(-1 * motorPower);
     }
+<<<<<<< HEAD
     else {
+=======
+    else if (direction == BACKWARD){
+>>>>>>> 41f53b10f7a6389138bdbee4b805720b8b62fd99
         rightMotor.SetPercent(motorPower);
         leftMotor.SetPercent(motorPower);
     }
@@ -55,6 +59,10 @@ void turnRight(int motorPower, int angle) {
 
     //Calculate counts to turn
     int counts = (318*PI*BOT_WIDTH*angle)/(360*PI*WHEEL_DIAMETER);
+<<<<<<< HEAD
+=======
+    counts = counts * RIGHT_TUNING_CONST * 1.14;
+>>>>>>> 41f53b10f7a6389138bdbee4b805720b8b62fd99
 
     /*
     While the average of the left and right encoder is less 
@@ -80,7 +88,11 @@ void turnLeft(int motorPower, int angle) {
 
     //Calculate counts to turn
     int counts = (318*PI*BOT_WIDTH*angle)/(360*PI*WHEEL_DIAMETER);
+<<<<<<< HEAD
 
+=======
+    counts = counts * (LEFT_TUNING_CONST - 0.075) * 1.1;
+>>>>>>> 41f53b10f7a6389138bdbee4b805720b8b62fd99
     /*
     While the average of the left and right encoder is less 
     than counts keep running the robot
@@ -413,7 +425,11 @@ void setArmStart() {
 }
 
 void dropTray() {
+<<<<<<< HEAD
 
+=======
+    topServo.SetDegree(50);
+>>>>>>> 41f53b10f7a6389138bdbee4b805720b8b62fd99
 }
 
 void setArmPositionTicketSlide() {
@@ -422,4 +438,28 @@ void setArmPositionTicketSlide() {
 
 void slideTicket() {
 
+<<<<<<< HEAD
 }
+=======
+}
+
+/*void setArmPositionBurgerStart(){
+    topServo.SetDegree(150);
+    Sleep(0.5);
+    middleServo.SetDegree(17);
+    Sleep(0.5);
+    bottomServo.SetDegree(150);
+    Sleep(0.5);
+}
+
+void BurgerFlip(){
+    bool Burg = true;
+    Sleep(5.0);
+    Burg = false;
+    while (Burg == true){
+        turnRight();
+
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+}
+*/
+>>>>>>> 41f53b10f7a6389138bdbee4b805720b8b62fd99
