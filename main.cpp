@@ -44,13 +44,6 @@ int main(void) {
     turnRight(25,45);
     // Move forward 40 inches (up the ramp)
     moveDistance(40,FORWARD, 36);
-    turnLeft(25,90);
-    moveDistance(25,FORWARD,6.5);
-    Sleep(.5);
-    turnLeft(25,90);
-    driveUntilWall(20,FORWARD);
-    Sleep(.5);
-    dropTray();
-
+    // turn left to bump into wall
     
 }
