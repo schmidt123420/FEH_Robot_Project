@@ -39,6 +39,6 @@ AnalogInputPin leftOpt(FEHIO::P1_0);
 
 //Bump switch definitions
 DigitalInputPin microSwitchFrontRight(FEHIO::P2_0);
-DigitalInputPin microSwitchFrontLeft(FEHIO::P2_2);
+DigitalInputPin microSwitchFrontLeft(FEHIO::P2_3);
 DigitalInputPin microSwitchBackRight(FEHIO::P2_1);
-DigitalInputPin microSwitchBackLeft(FEHIO::P2_3);
+DigitalInputPin microSwitchBackLeft(FEHIO::P2_2);

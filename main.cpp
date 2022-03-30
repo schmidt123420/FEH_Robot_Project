@@ -25,7 +25,7 @@ int main(void) {
     topServo.SetMax(TOP_SERVO_MAX);
     //Start with arm in upright starting position
     setArmStart();
-
+    
     //Wait until light turns on
     int firstLight = waitUntilLight();
 
@@ -37,21 +37,20 @@ int main(void) {
         LCD.WriteLine("Light color: Red");
     }
 
-    // Move forward 13.5 inches
+    //Move forward 13.5 inches
     moveDistance(35,FORWARD,13.5);
     // Turn 45 right
     Sleep(.5);
     turnRight(25,45);
     // Move forward 40 inches (up the ramp)
-    moveDistance(40,FORWARD, 35);
+    moveDistance(40,FORWARD, 36);
     turnLeft(25,90);
-    moveDistance(25,FORWARD,5);
+    moveDistance(25,FORWARD,6.5);
     Sleep(.5);
     turnLeft(25,90);
     driveUntilWall(20,FORWARD);
-    // moveDistance(35,BACKWARD,4);
-    // turnRight(25,180);
-    // moveDistance(35,FORWARD,18);
-    // turnLeft(25,90)
-    // dropTray();
+    Sleep(.5);
+    dropTray();
+
+    
 }

@@ -30,7 +30,7 @@ void moveDistance(int motorPower, bool direction, float distance) {
         rightMotor.SetPercent(-1 * motorPower);
         leftMotor.SetPercent(-1 * motorPower);
     }
-    else {
+    else if (direction == BACKWARD){
         rightMotor.SetPercent(motorPower);
         leftMotor.SetPercent(motorPower);
     }
@@ -55,6 +55,7 @@ void turnRight(int motorPower, int angle) {
 
     //Calculate counts to turn
     int counts = (318*PI*BOT_WIDTH*angle)/(360*PI*WHEEL_DIAMETER);
+    counts = counts * RIGHT_TUNING_CONST * 1.14;
 
     /*
     While the average of the left and right encoder is less 
@@ -80,7 +81,7 @@ void turnLeft(int motorPower, int angle) {
 
     //Calculate counts to turn
     int counts = (318*PI*BOT_WIDTH*angle)/(360*PI*WHEEL_DIAMETER);
-
+    counts = counts * (LEFT_TUNING_CONST - 0.075) * 1.1;
     /*
     While the average of the left and right encoder is less 
     than counts keep running the robot
@@ -413,7 +414,7 @@ void setArmStart() {
 }
 
 void dropTray() {
-
+    topServo.SetDegree(50);
 }
 
 void setArmPositionTicketSlide() {
@@ -423,3 +424,23 @@ void setArmPositionTicketSlide() {
 void slideTicket() {
 
 }
+
+/*void setArmPositionBurgerStart(){
+    topServo.SetDegree(150);
+    Sleep(0.5);
+    middleServo.SetDegree(17);
+    Sleep(0.5);
+    bottomServo.SetDegree(150);
+    Sleep(0.5);
+}
+
+void BurgerFlip(){
+    bool Burg = true;
+    Sleep(5.0);
+    Burg = false;
+    while (Burg == true){
+        turnRight();
+
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+}
+*/
