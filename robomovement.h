@@ -62,6 +62,16 @@ void driveUntilWall(int motorPower, bool direction);
 */
 void driveUntilLine(int motorPower, bool direction);
 
+/*!
+*   Drives forward until front left bump switch has been pressed
+*/
+void driveForwardUntilLeftBump(int motorPower);
+
+/*!
+*   Drives forward until front right bump switch has been pressed
+*/
+void driveForwardUntilRightBump(int motorPower);
+
 /*! Follow line on the course (either straight or curved)
 *   for given distance
 *
@@ -90,6 +100,9 @@ void setArmPositionTicketSlide();
 */
 void slideTicket();
 
+/*! Set arm position for burger flip
+*/
+void setArmPositionBurgerFlip();
 
 
 #endif

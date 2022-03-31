@@ -30,11 +30,7 @@ void moveDistance(int motorPower, bool direction, float distance) {
         rightMotor.SetPercent(-1 * motorPower);
         leftMotor.SetPercent(-1 * motorPower);
     }
-<<<<<<< HEAD
-    else {
-=======
     else if (direction == BACKWARD){
->>>>>>> 41f53b10f7a6389138bdbee4b805720b8b62fd99
         rightMotor.SetPercent(motorPower);
         leftMotor.SetPercent(motorPower);
     }
@@ -59,10 +55,6 @@ void turnRight(int motorPower, int angle) {
 
     //Calculate counts to turn
     int counts = (318*PI*BOT_WIDTH*angle)/(360*PI*WHEEL_DIAMETER);
-<<<<<<< HEAD
-=======
-    counts = counts * RIGHT_TUNING_CONST * 1.14;
->>>>>>> 41f53b10f7a6389138bdbee4b805720b8b62fd99
 
     /*
     While the average of the left and right encoder is less 
@@ -88,11 +80,6 @@ void turnLeft(int motorPower, int angle) {
 
     //Calculate counts to turn
     int counts = (318*PI*BOT_WIDTH*angle)/(360*PI*WHEEL_DIAMETER);
-<<<<<<< HEAD
-
-=======
-    counts = counts * (LEFT_TUNING_CONST - 0.075) * 1.1;
->>>>>>> 41f53b10f7a6389138bdbee4b805720b8b62fd99
     /*
     While the average of the left and right encoder is less 
     than counts keep running the robot
@@ -195,6 +182,44 @@ void driveUntilLine(int motorPower, bool direction) {
     }
     rightMotor.Stop();
     leftMotor.Stop();
+}
+
+void driveForwardUntilLeftBump(int motorPower) {
+    //Set motor percentage as -motorPower
+    rightMotor.SetPercent(-1*motorPower);
+    leftMotor.SetPercent(-1*motorPower);
+
+    //Keep moving until left switch has been pressed
+    while (microSwitchFrontLeft.Value()) {
+        if (microSwitchFrontLeft.Value()) {
+            //do nothing
+        }
+        else if (!microSwitchFrontLeft.Value()) {
+            leftMotor.Stop();
+            rightMotor.Stop();
+        }
+    }
+    leftMotor.Stop();
+    rightMotor.Stop();
+}
+
+void driveForwardUntilRightBump(int motorPower) {
+    //Set motor percentage as -motorPower
+    rightMotor.SetPercent(-1*motorPower);
+    leftMotor.SetPercent(-1*motorPower);
+
+    //Keep moving until left switch has been pressed
+    while (microSwitchFrontRight.Value()) {
+        if (microSwitchFrontRight.Value()) {
+            //do nothing
+        }
+        else if (!microSwitchFrontRight.Value()) {
+            leftMotor.Stop();
+            rightMotor.Stop();
+        }
+    }
+    leftMotor.Stop();
+    rightMotor.Stop();
 }
 
 
@@ -425,41 +450,29 @@ void setArmStart() {
 }
 
 void dropTray() {
-<<<<<<< HEAD
-
-=======
     topServo.SetDegree(50);
->>>>>>> 41f53b10f7a6389138bdbee4b805720b8b62fd99
 }
 
 void setArmPositionTicketSlide() {
-
+    topServo.SetDegree(90);
+    Sleep(1.0);
+    middleServo.SetDegree(120);
+    Sleep(1.0);
+    bottomServo.SetDegree(90);
+    Sleep(1.0);
 }
 
 void slideTicket() {
-
-<<<<<<< HEAD
+    turnLeft(25, 45);
+    Sleep(1.0);
+    turnRight(25, 45);
 }
-=======
-}
 
-/*void setArmPositionBurgerStart(){
-    topServo.SetDegree(150);
+void setArmPositionBurgerFlip() {
+    topServo.SetDegree(70);
     Sleep(0.5);
-    middleServo.SetDegree(17);
+    middleServo.SetDegree(180);
     Sleep(0.5);
     bottomServo.SetDegree(150);
     Sleep(0.5);
 }
-
-void BurgerFlip(){
-    bool Burg = true;
-    Sleep(5.0);
-    Burg = false;
-    while (Burg == true){
-        turnRight();
-
-    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-}
-*/
->>>>>>> 41f53b10f7a6389138bdbee4b805720b8b62fd99
