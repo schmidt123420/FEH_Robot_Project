@@ -55,6 +55,7 @@ void turnRight(int motorPower, int angle) {
 
     //Calculate counts to turn
     int counts = (318*PI*BOT_WIDTH*angle)/(360*PI*WHEEL_DIAMETER);
+    counts = counts * RIGHT_TUNING_CONST * 1.14;
 
     /*
     While the average of the left and right encoder is less 
@@ -80,6 +81,7 @@ void turnLeft(int motorPower, int angle) {
 
     //Calculate counts to turn
     int counts = (318*PI*BOT_WIDTH*angle)/(360*PI*WHEEL_DIAMETER);
+    counts = counts * (LEFT_TUNING_CONST - 0.075) * 1.1;
     /*
     While the average of the left and right encoder is less 
     than counts keep running the robot
@@ -152,6 +154,7 @@ void driveUntilWall(int motorPower, bool direction) {
 
     rightMotor.Stop();
     leftMotor.Stop();
+    Sleep(1.0);
 }
 
 void driveUntilLine(int motorPower, bool direction) {
@@ -182,6 +185,7 @@ void driveUntilLine(int motorPower, bool direction) {
     }
     rightMotor.Stop();
     leftMotor.Stop();
+    Sleep(1.0);
 }
 
 void driveForwardUntilLeftBump(int motorPower) {
@@ -445,7 +449,7 @@ void setArmStart() {
     Sleep(0.5);
     middleServo.SetDegree(30);
     Sleep(0.5);
-    bottomServo.SetDegree(150);
+    bottomServo.SetDegree(180);
     Sleep(0.5);
 }
 
@@ -456,7 +460,7 @@ void dropTray() {
 void setArmPositionTicketSlide() {
     topServo.SetDegree(90);
     Sleep(1.0);
-    middleServo.SetDegree(120);
+    middleServo.SetDegree(150);
     Sleep(1.0);
     bottomServo.SetDegree(90);
     Sleep(1.0);
