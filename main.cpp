@@ -217,8 +217,6 @@ void ticketSlideAndEndOfRun() {
 
 //Code for going from jukebox light to ticket and sliding ticket
 int main(void) {
-    // setArmStart();
-    // Sleep(2.0);
     RPS.InitializeTouchMenu();
     startAndDropTray();
     burgerFlip();
