@@ -25,10 +25,10 @@ void startAndDropTray() {
     moveDistance(35,FORWARD,13.5);
     // Turn 45 right
     Sleep(.5);
-    turnRight(25,45);
+    turnRight(25,50);
     // Move forward 25 inches (up the ramp)
-    moveDistance(35,FORWARD,25);
-    // turn left to bump into wall
+    moveDistance(40,FORWARD,25);
+    // turn right to bump into wall
     turnRight(25,90);
     driveUntilWall(40,FORWARD);
 
@@ -83,7 +83,7 @@ void burgerFlip() {
 
 void flipIceCreamLever() {
     //Get arm in position to flip ice cream lever
-    bottomServo.SetDegree(150);
+    bottomServo.SetDegree(125);
     Sleep(0.5);
     topServo.SetDegree(90);
     Sleep(0.5);
@@ -167,21 +167,27 @@ void iceCreamToJukebox() {
 
     //turn right and drive down ramp
     turnRight(25, 90);
-    moveDistance(25, FORWARD, 20);
+    moveDistance(25, FORWARD, 15);
+    Sleep(4.0);
 
-    //turn a bit to the left and drive until wall
-    turnLeft(25, 10);
-    driveUntilWall(40, FORWARD);
+    // //turn a bit to the left and drive until wall
+    // turnLeft(25, 15);
+    // Sleep(2.0);
+    // driveUntilWall(40, FORWARD);
 
-    //drive backwards and turn right
-    moveDistance(40, BACKWARD, 19);
-    turnRight(25, 90);
-    driveUntilLine(25, FORWARD);
+    // //drive backwards and turn right
+    // moveDistance(40, BACKWARD, 16);
+    // Sleep(1.0);
+    // turnRight(25, 90);
+    // Sleep(1.0);
+    // driveUntilLine(25, FORWARD);
+    // Sleep(1.0);
 
-    //turn left and drive until over light
-    moveDistance(25, FORWARD, 1);
-    turnLeft(25, 90);
-    moveDistance(25, FORWARD, 4); //to get above light
+    // //turn left and drive until over light
+    // moveDistance(25, FORWARD, 1);
+    // Sleep(1.0);
+    // turnLeft(25, 90);
+    // moveDistance(25, FORWARD, 4); //to get above light
 }
 
 /*
@@ -212,7 +218,11 @@ void ticketSlideAndEndOfRun() {
 
     //set arm position for ticket slide and slide ticket
     setArmPositionTicketSlide();
-    //slideTicket();
+    moveDistance(25, FORWARD, 3);
+    slideTicket();
+
+    //drive backward into button to end run
+    moveDistance(40, BACKWARD, 25);
 }
 
 //Code for going from jukebox light to ticket and sliding ticket
@@ -223,6 +233,6 @@ int main(void) {
     burgerFlipToIceCream();
     flipIceCreamLever();
     iceCreamToJukebox();
-    jukeboxStuff();
+    //jukeboxStuff();
     ticketSlideAndEndOfRun();
 }
