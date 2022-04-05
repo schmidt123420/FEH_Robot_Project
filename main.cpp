@@ -38,11 +38,11 @@ void startAndDropTray() {
 
     //Line up with tray drop
     driveForwardUntilLeftBump(25);
-    turnLeft(25, 10);
+    turnLeft(25, 5);
     Sleep(0.5);
     dropTray();
     Sleep(1.0);
-    turnRight(25, 10);
+    turnRight(25, 5);
     Sleep(0.5);
     // drive backward and turn right to be perpendicular to burger flip line
     driveUntilWall(25,BACKWARD);
@@ -51,7 +51,6 @@ void startAndDropTray() {
     setArmPositionBurgerFlip();
     driveUntilLine(25,FORWARD);
     Sleep(2.0);
-    //moveDistance(25,FORWARD,1.5);
 }
 
 /*
@@ -73,17 +72,11 @@ void burgerFlip() {
     moveDistance(25,FORWARD, 3);
     turnRight(25, 25);
     Sleep(2.0);
-
-    // //Flip hot plate back
-    // Sleep(4.0);
-    // moveDistance(25,FORWARD, 1);
-    // turnLeft(25, 45);
-    // moveDistance(40,BACKWARD, 1);
 }
 
 void flipIceCreamLever() {
     //Get arm in position to flip ice cream lever
-    bottomServo.SetDegree(125);
+    bottomServo.SetDegree(140);
     Sleep(0.5);
     topServo.SetDegree(90);
     Sleep(0.5);
@@ -119,7 +112,7 @@ void burgerFlipToIceCream() {
     moveDistance(40, BACKWARD, 1);
     turnLeft(25, 45);
     moveDistance(40, FORWARD, 3); //drive forward until over black line
-    followLineForDistance(5);
+    followLineForDistance(6);
 }
 
 void jukeboxStuff() {
@@ -156,83 +149,98 @@ void jukeboxStuff() {
     setArmStart();
 }
 
-void iceCreamToJukebox() {
+void iceCreamToTicketSlide() {
     //back up, turn to face wall, and drive until wall
-    moveDistance(40, BACKWARD, 10);
+    moveDistance(40, BACKWARD, 11); //used to be 10, changed to 10.5 because changed 5 to 5.5 to flip ice cream lever up
+    Sleep(1.0);
     turnRight(25, 135);
+    Sleep(1.0);
+    setArmStart();
+    Sleep(1.0);
     driveUntilWall(40, FORWARD);
+    Sleep(1.0);
 
     //back up
-    moveDistance(40, BACKWARD, 12);
+    moveDistance(40, BACKWARD, 11.5);
+    Sleep(1.0);
 
     //turn right and drive down ramp
-    turnRight(25, 90);
-    moveDistance(25, FORWARD, 15);
-    Sleep(4.0);
-
-    // //turn a bit to the left and drive until wall
-    // turnLeft(25, 15);
-    // Sleep(2.0);
-    // driveUntilWall(40, FORWARD);
-
-    // //drive backwards and turn right
-    // moveDistance(40, BACKWARD, 16);
-    // Sleep(1.0);
-    // turnRight(25, 90);
-    // Sleep(1.0);
-    // driveUntilLine(25, FORWARD);
-    // Sleep(1.0);
-
-    // //turn left and drive until over light
-    // moveDistance(25, FORWARD, 1);
-    // Sleep(1.0);
-    // turnLeft(25, 90);
-    // moveDistance(25, FORWARD, 4); //to get above light
+    turnRight(25, 85);
+    Sleep(1.0);
+    moveDistance(40, FORWARD, 25);
+    Sleep(1.0);
 }
 
 /*
     Jukebox light -> Ticket slide -> End of Run
 */
-void ticketSlideAndEndOfRun() {
-    //Start with arm in upright starting position
-    // setArmStart();
-    Sleep(2.0);
+void ticketSlide() {
+    //drive a bit further
+    moveDistance(40, FORWARD, 7);
+    Sleep(1.0);
 
-    //turn left 90 degrees and drive from jukebox light to wall
-    turnLeft(25, 90);
+    //turn left 90 degrees and drive to wall
+    turnLeft(25, 85);
     Sleep(1.0);
     driveUntilWall(40, FORWARD);
     Sleep(1.0);
 
     //back up and turn left 90 degrees
-    moveDistance(25, BACKWARD, 3);
+    moveDistance(25, BACKWARD, 1);
     Sleep(1.0);
-    turnLeft(25, 90);
+    turnLeft(25, 85);
     Sleep(1.0);
 
     //drive into ticket area and back up a bit
     driveUntilWall(40, FORWARD);
+    moveDistance(25, BACKWARD, 7);
     Sleep(1.0);
-    moveDistance(25, BACKWARD, 8);
-    Sleep(1.0);
+
 
     //set arm position for ticket slide and slide ticket
     setArmPositionTicketSlide();
-    moveDistance(25, FORWARD, 3);
+    Sleep(1.0);
+    turnRight(25, 17.5);
+    Sleep(0.5);
+    moveDistance(25, FORWARD, 4.5);
+    Sleep(1.0);
     slideTicket();
+}
 
-    //drive backward into button to end run
-    moveDistance(40, BACKWARD, 25);
+void ticketSlideToJukebox() {
+    //drive backward from ticket slide and turn left 90 degrees
+    moveDistance(40, BACKWARD, 11);
+    Sleep(0.5);
+    turnLeft(25, 85);
+    Sleep(2.0);
+
+    //drive forward to line up with wall and drive backwards to be above jukebox light
+    driveUntilWall(40, FORWARD);
+    moveDistance(25, BACKWARD, 5.5);
+
+    //check if can see light
+    int light = waitUntilLight();
+    if (light == RED_COLOR) {
+        LCD.WriteLine("Sees red");
+    }
+    else if (light == BLUE_COLOR) {
+        LCD.WriteLine("Sees blue");
+    }
+    else {
+        LCD.WriteLine("doesn't see red or blue, something wrong");
+    }
 }
 
 //Code for going from jukebox light to ticket and sliding ticket
 int main(void) {
-    RPS.InitializeTouchMenu();
-    startAndDropTray();
-    burgerFlip();
-    burgerFlipToIceCream();
-    flipIceCreamLever();
-    iceCreamToJukebox();
-    //jukeboxStuff();
-    ticketSlideAndEndOfRun();
+    //RPS.InitializeTouchMenu();
+    // startAndDropTray();
+    // burgerFlip();
+    // burgerFlipToIceCream();
+    // flipIceCreamLever();
+    // iceCreamToTicketSlide();
+    setArmStart();
+    Sleep(1.0);
+    ticketSlide();
+    ticketSlideToJukebox();
 }

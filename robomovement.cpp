@@ -44,6 +44,21 @@ void moveDistance(int motorPower, bool direction, float distance) {
     leftMotor.Stop();
 }
 
+void turnRightForTime(float time) {
+    float timeNow = TimeNow();
+
+    rightMotor.SetPercent(25);
+    leftMotor.SetPercent(-25);
+
+    while (TimeNow() - timeNow < time) {
+        //do nothing
+    }
+
+    //Turn off motors
+    rightMotor.Stop();
+    leftMotor.Stop();
+}
+
 void turnRight(int motorPower, int angle) {
     //Reset encoder counts
     rightEncoder.ResetCounts();
@@ -62,6 +77,21 @@ void turnRight(int motorPower, int angle) {
     than counts keep running the robot
     */
     while ((leftEncoder.Counts() + rightEncoder.Counts()) / 2.0 < counts) {
+        //do nothing
+    }
+
+    //Turn off motors
+    rightMotor.Stop();
+    leftMotor.Stop();
+}
+
+void turnLeftForTime(float time) {
+    float timeNow = TimeNow();
+
+    rightMotor.SetPercent(-25);
+    leftMotor.SetPercent(25);
+
+    while (TimeNow() - timeNow < time) {
         //do nothing
     }
 
@@ -462,14 +492,23 @@ void setArmPositionTicketSlide() {
     Sleep(1.0);
     middleServo.SetDegree(150);
     Sleep(1.0);
-    bottomServo.SetDegree(90);
+    bottomServo.SetDegree(140);
     Sleep(1.0);
 }
 
 void slideTicket() {
-    turnLeft(25, 45);
+    turnLeftForTime(0.75);
     Sleep(1.0);
-    turnRight(25, 45);
+    turnRightForTime(0.5);
+    Sleep(2.0);
+    turnLeft(25, 17.5);
+    Sleep(1.0);
+    moveDistance(40, BACKWARD, 8);
+    Sleep(1.0);
+    setArmStart();
+    Sleep(1.0);
+    driveUntilWall(40, FORWARD);
+    Sleep(1.0);
 }
 
 void setArmPositionBurgerFlip() {

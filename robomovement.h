@@ -15,6 +15,8 @@
 */
 void moveDistance(int motorPower, bool direction, float distance);
 
+void turnRightForTime(float time);
+
 
 /*! Turn to the right given angle using encoders.
 *
@@ -25,6 +27,8 @@ void moveDistance(int motorPower, bool direction, float distance);
 * @param angle = angle to turn
 */
 void turnRight(int motorPower, int angle);
+
+void turnLeftForTime(float time);
 
 
 /*! Turn to the left given angle using encoders.
