@@ -44,6 +44,31 @@ void moveDistance(int motorPower, bool direction, float distance) {
     leftMotor.Stop();
 }
 
+void moveDistanceForTime(int motorPower, bool direction, float time) {
+    float timeNow = TimeNow();
+
+    //Set both motors to desired percent
+    //multiply by -1 because set up motors backwards
+    if (direction == FORWARD) {
+        rightMotor.SetPercent(-1 * motorPower);
+        leftMotor.SetPercent(-1 * motorPower);
+    }
+    else if (direction == BACKWARD){
+        rightMotor.SetPercent(motorPower);
+        leftMotor.SetPercent(motorPower);
+    }
+
+    //While the average of the left and right encoder is less than distance,
+    //keep running motors
+    while(TimeNow() - timeNow < time) {
+        //do nothing
+    }
+
+    //Turn off motors
+    rightMotor.Stop();
+    leftMotor.Stop();
+}
+
 void turnRightForTime(float time) {
     float timeNow = TimeNow();
 
@@ -184,7 +209,7 @@ void driveUntilWall(int motorPower, bool direction) {
 
     rightMotor.Stop();
     leftMotor.Stop();
-    Sleep(1.0);
+    Sleep(0.5);
 }
 
 void driveUntilLine(int motorPower, bool direction) {
@@ -215,7 +240,7 @@ void driveUntilLine(int motorPower, bool direction) {
     }
     rightMotor.Stop();
     leftMotor.Stop();
-    Sleep(1.0);
+    Sleep(0.5);
 }
 
 void driveForwardUntilLeftBump(int motorPower) {
@@ -484,31 +509,32 @@ void setArmStart() {
 }
 
 void dropTray() {
+    // middleServo.SetDegree(40); //NEW
     topServo.SetDegree(50);
 }
 
 void setArmPositionTicketSlide() {
     topServo.SetDegree(90);
-    Sleep(1.0);
+    Sleep(0.5);
     middleServo.SetDegree(150);
-    Sleep(1.0);
+    Sleep(0.5);
     bottomServo.SetDegree(140);
-    Sleep(1.0);
+    Sleep(0.5);
 }
 
 void slideTicket() {
-    turnLeftForTime(0.75);
-    Sleep(1.0);
+    turnLeftForTime(1.0);
+    // Sleep(0.5);
     turnRightForTime(0.5);
-    Sleep(2.0);
+    // Sleep(0.5);
     turnLeft(25, 17.5);
-    Sleep(1.0);
-    moveDistance(40, BACKWARD, 8);
-    Sleep(1.0);
+    // Sleep(0.5);
+    moveDistance(40, BACKWARD, 6);
+    // Sleep(0.5);
     setArmStart();
-    Sleep(1.0);
-    driveUntilWall(40, FORWARD);
-    Sleep(1.0);
+    // Sleep(0.5);
+    driveUntilWall(25, FORWARD);
+    // Sleep(0.5);
 }
 
 void setArmPositionBurgerFlip() {
@@ -518,4 +544,23 @@ void setArmPositionBurgerFlip() {
     Sleep(0.5);
     bottomServo.SetDegree(150);
     Sleep(0.5);
+}
+
+void redButtonJukebox() {
+    //drive backwards
+    rightMotor.SetPercent(25);
+    leftMotor.SetPercent(25);
+
+    float timeNow = TimeNow();
+
+    //keep driving backward until time has passed
+    while (TimeNow() - timeNow < 5.0) {
+        //if right back switch has been pressed, turn off right motor but keep driving with left
+        if (!microSwitchBackRight.Value()) {
+            rightMotor.Stop();
+        }
+    }
+
+    rightMotor.Stop();
+    leftMotor.Stop();
 }

@@ -15,6 +15,8 @@
 */
 void moveDistance(int motorPower, bool direction, float distance);
 
+void moveDistanceForTime(int motorPower, bool direction, float time);
+
 void turnRightForTime(float time);
 
 
@@ -107,6 +109,8 @@ void slideTicket();
 /*! Set arm position for burger flip
 */
 void setArmPositionBurgerFlip();
+
+void redButtonJukebox();
 
 
 #endif
