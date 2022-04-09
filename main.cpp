@@ -109,8 +109,20 @@ void flipIceCreamLever() {
     middleServo.SetDegree(70);
     Sleep(0.5);
 
-    // followLineForDistance(6); //USED TO BE 7
-    moveDistance(40, FORWARD, 3);
+    //Vanilla lever
+    if (RPS.GetIceCream() == 0) {
+        moveDistance(40, FORWARD, 1);
+    }
+    //Twist lever
+    else if (RPS.GetIceCream() == 1) {
+        moveDistance(40, FORWARD, 2);
+    }
+    else {
+        // followLineForDistance(6); //USED TO BE 7
+        moveDistance(40, FORWARD, 3);
+    }
+    // // followLineForDistance(6); //USED TO BE 7
+    // moveDistance(40, FORWARD, 3);
 
     //flip lever down
     middleServo.SetDegree(120);
@@ -123,21 +135,53 @@ void flipIceCreamLever() {
 
     //lower arm to position to flip lever back up and move forward
     middleServo.SetDegree(180);
-    moveDistance(25, FORWARD, 5.5); //USED TO BE 4
+    if (RPS.GetIceCream() == 0) {
+        moveDistance(25, FORWARD, 4.75);
+    }
+    else {
+        moveDistance(25, FORWARD, 5.5); //USED TO BE 4
+    }
     // Sleep(0.5);
 
     //flip lever up
-    topServo.SetDegree(0);
-    middleServo.SetDegree(70);
-    Sleep(1.0);
+    topServo.SetDegree(10); //USED TO BE 0
+    middleServo.SetDegree(60); //USED TO BE 70
+    Sleep(2.0);
 
 }
 
 void burgerFlipToIceCream() {
-    moveDistance(25, BACKWARD, 4);
-    Sleep(0.5);
-    turnLeft(25, 115);
-    Sleep(0.5);
+    //Vanilla lever
+    if (RPS.GetIceCream() == 0) {
+        turnLeft(25, 10);
+        Sleep(2.0);
+        moveDistance(25, BACKWARD, 12);
+        Sleep(2.0);
+        turnLeft(25, 115); //USED TO BE 120
+        Sleep(2.0);
+    }
+    //Twist lever 
+    else if (RPS.GetIceCream() == 1) {
+        turnLeft(25, 5);
+        Sleep(2.0);
+        moveDistance(25, BACKWARD, 7);
+        Sleep(2.0);
+        turnLeft(25, 115);
+        Sleep(2.0);
+    }
+    //Chocolate lever
+    else {
+        moveDistance(25, BACKWARD, 4);
+        Sleep(2.0);
+        turnLeft(25, 115);
+        Sleep(2.0);
+    } 
+
+    //BELOW WAS WORKING BEFORE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // moveDistance(25, BACKWARD, 4);
+    // Sleep(0.5);
+    // turnLeft(25, 115);
+    // Sleep(0.5);
 }
 
 void jukeboxStuff() {
@@ -152,6 +196,8 @@ void jukeboxStuff() {
         turnRight(25, 93.5); //USED TO BE 92
         // Sleep(0.5);
         redButtonJukebox();
+        Sleep(0.5);
+        turnRight(25, 10); //NEW
     }
     else if (light == BLUE_COLOR) {
         LCD.WriteLine("Sees blue");
@@ -172,10 +218,16 @@ void jukeboxStuff() {
     //Drive from jukebox to final button
     moveDistance(25, FORWARD, 5);
     // Sleep(0.5);
-    turnRight(25, 86);
+    if (light == BLUE_COLOR) {
+        turnRight(25, 86);
+    }
+    else {
+        turnRight(25, 90); //USED TO BE 95
+    }
+    
     // Sleep(0.5);
     driveUntilWall(40, FORWARD);
-    moveDistance(25, BACKWARD, 9.5);
+    moveDistance(25, BACKWARD, 10);
     // Sleep(0.5);
     turnLeft(25, 135);
     moveDistanceForTime(40, BACKWARD, 5);
@@ -254,7 +306,7 @@ void ticketSlideToJukebox() {
 
 //Code for going from jukebox light to ticket and sliding ticket
 int main(void) {
-    // RPS.InitializeTouchMenu();
+    RPS.InitializeTouchMenu();
     startAndDropTray();
     burgerFlip(); 
     burgerFlipToIceCream();

@@ -548,13 +548,13 @@ void setArmPositionBurgerFlip() {
 
 void redButtonJukebox() {
     //drive backwards
-    rightMotor.SetPercent(25);
-    leftMotor.SetPercent(25);
+    rightMotor.SetPercent(40);
+    leftMotor.SetPercent(40);
 
     float timeNow = TimeNow();
 
     //keep driving backward until time has passed
-    while (TimeNow() - timeNow < 5.0) {
+    while (TimeNow() - timeNow < 2.5) {
         //if right back switch has been pressed, turn off right motor but keep driving with left
         if (!microSwitchBackRight.Value()) {
             rightMotor.Stop();
